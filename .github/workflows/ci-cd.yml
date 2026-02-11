@@ -22,4 +22,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render Deployment
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        # Adding quotes around the secret prevents formatting errors
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
