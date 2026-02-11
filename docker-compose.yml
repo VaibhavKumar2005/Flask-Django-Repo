@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    image: vaibhavkumar2005/flask-crud-app:v1
+    ports:
+      - "5000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - FLASK_ENV=development
+    restart: always
