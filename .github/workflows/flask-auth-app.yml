@@ -3,17 +3,15 @@ name: FlaskAuthApp CI/CD
 on:
   push:
     branches: [ main ]
-    # This ensures the pipeline ONLY runs if you change files in the FlaskAuthApp folder
     paths:
-      - 'FlaskAuthApp/**'
+      - 'FlaskAuthApp/**' # Runs only when FlaskAuthApp folder changes
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    # Set the working directory so pip and python commands run inside the correct folder
     defaults:
       run:
-        working-directory: ./FlaskAuthApp
+        working-directory: ./FlaskAuthApp # Executes commands inside the project folder
         
     steps:
       - uses: actions/checkout@v4
@@ -36,6 +34,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render Deployment
-        # Using a NEW secret specific to this app
         run: |
           curl -X POST "${{ secrets.FLASK_AUTH_RENDER_HOOK }}"

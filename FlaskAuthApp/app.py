@@ -14,6 +14,10 @@ class User(db.Model):
     email = db.Column(db.String(500), nullable=False, unique=True)
     password = db.Column(db.String(200), nullable=False)
 
+# MANDATORY: Create database tables outside the main block for Render
+with app.app_context():
+    db.create_all()
+
 @app.route("/")
 def home():
     users = User.query.all()
@@ -26,18 +30,18 @@ def register():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        # Backend Validation Requirements [cite: 3]
+        # Backend Validation Requirements [cite: 19, 21-28]
         if not name or not email or not password:
-            flash("All fields are mandatory.", "danger")
+            flash("All fields (Name, Email, Password) are mandatory.", "danger")
             return redirect(url_for('register'))
 
         if len(password) < 6:
-            flash("Password must be at least 6 characters.", "danger")
+            flash("Password must be at least 6 characters.", "danger") [cite: 28]
             return redirect(url_for('register'))
 
         user_exists = User.query.filter_by(email=email).first()
         if user_exists:
-            flash("Email already registered.", "warning")
+            flash("Email already registered. Show proper error message.", "warning") [cite: 27, 30]
             return redirect(url_for('register'))
 
         # Save valid user
@@ -50,6 +54,4 @@ def register():
     return render_template("register.html")
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all() # Automatically creates the db with new schema
     app.run(debug=True)
